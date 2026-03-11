@@ -14,7 +14,6 @@
 
 
 ## Timeline
-
 The following schedule outlines the tasks, descriptions, and responsibilities for the duration of the project.
 
 ### **Week 1: Data Acquisition & Cleaning**
@@ -53,10 +52,14 @@ The following schedule outlines the tasks, descriptions, and responsibilities fo
 
 * **Responsibility:** Christopher and Brendan
 
-
-
 ## Constraints
+While the aim of this project is to uncover meaningful patterns & trends, there are several factors that may limit the precision of our analysis.
 
+* **Correlation vs Causation**: One major limitation is that stock prices are influenced by a variety of factors, including corporate earnings, geopolitical events, investor sentiment, and many more. These all fall outside the scope of macro-economic indicators that we will be analyzing.
+
+* **Data Mismatch**: Another issue that we will have to deal with is the mismatch between our two data sources. S&P 500 data is available on a daily basis, but most macro indicators from FRED (such as CPI or CCI) are only updated monthly or quarterly. This will require us to smooth out data manually during pre-processing.
+
+* **Historical Scope**: Since we will focus on a 5 year window, our analysis provides a snapshot of the current economic environment but may not capture how these correlations behave during different long-term cycles, such as major recessions or periods of hyper-inflation.
 
 ## Gaps
 
