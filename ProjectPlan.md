@@ -27,7 +27,7 @@ The following schedule outlines the tasks, descriptions, and responsibilities fo
 
 * **Pre-processing:** Handle missing values, remove outliers, and normalize columns to prepare for statistical testing.
 
-* **Responsibility:** Christopher and Brandon
+* **Responsibility:** Christopher and Brendan
 
 ### **Weeks 2–3: Data Analysis**
 
@@ -39,7 +39,7 @@ The following schedule outlines the tasks, descriptions, and responsibilities fo
 
 * **Statistical Summary:** Calculate descriptive statistics (mean, volatility, and distribution) for both the macro-indicators and market returns.
 
-* **Responsibility:** Christopher and Brandon
+* **Responsibility:** Christopher and Brendan
 
 ### **Weeks 4–5: Evaluation & Final Report**
 
@@ -51,7 +51,7 @@ The following schedule outlines the tasks, descriptions, and responsibilities fo
 
 * **Final Documentation:** Draft the formal project report, integrating the methodology, data visualizations, and final analytical conclusions.
 
-* **Responsibility:** Christopher and Brandon
+* **Responsibility:** Christopher and Brendan
 
 
 
