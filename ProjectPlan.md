@@ -30,37 +30,40 @@ To begin, we will perform exploratory data analysis and statistical testing. Thi
 
 ## Research Questions
 
-How strongly are macroeconomic indicators (such as interest rates, inflation, and unemployment rates) correlated with changes in the S&P 500 over time?
-
-Do the relationships between returns and indicators remain consistent across different time periods, or do they change during different market environments like COVID or The Great Financial Crisis of 2008?
-
-
-
+* How strongly are macroeconomic indicators (such as interest rates, inflation, and unemployment rates) correlated with changes in the S&P 500 over time?
+* Do the relationships between returns and indicators remain consistent across different time periods, or do they change during different market environments like COVID or The Great Financial Crisis of 2008?
 
 ## Datasets
 
-Consumer Price Index 1960-2024 FRED (Federal Reserve Bank of St. Louis)
+* **Consumer Price Index 1960-2024 FRED** (Federal Reserve Bank of St. Louis)
 https://fred.stlouisfed.org/series/FPCPITOTLZGUSA
 
 This dataset contains the timeseries data for the inflation level faced by consumers by using a basket of consumer goods. These goods are split amongst all industries that everyday US consumers use such as food and beverages, education and communication tools, and housing. This dataset will be used to identify how inflation and the S&P 500 are related.
 
-Unemployment Rate 1948-2026 FRED (Federal Reserve Bank of St. Louis)
+* **Unemployment Rate 1948-2026 FRED** (Federal Reserve Bank of St. Louis)
 https://fred.stlouisfed.org/series/UNRATE
 
 This dataset contains the timeseries data for the unemployment rate of the United States. Unemployment is defined as people in the US capable of work that are 16 years or older as a percentage of the total workforce. Using unemployment can show when the overall macro economy is in a period of growth or recession. It will be especially useful for looking at period such as COVID or the Great Financial Crisis.
 
-Federal Funds Effective Rate 1954-2026 FRED (Federal Reserve Bank of St. Louis)
+* **Federal Funds Effective Rate 1954-2026 FRED** (Federal Reserve Bank of St. Louis)
 https://fred.stlouisfed.org/series/FEDFUNDS
 
 This dataset contains the timeseries data for the federal funds effective rate for the United States. This is a key measure of monetary policy in the United States, because the Federal Reserve Bank is able to set a target value that banks can lend to one another over night. This rate will be important to identify periods of easier or more difficult borrowing of money. 
 
+* **S&P 500 Index Historical Data 1927–2026** (Yahoo Finance API)
+https://finance.yahoo.com/quote/%5EGSPC/history/]
+
+This dataset provides the historical performance of the S&P 500, a stock market index tracking 500 of the largest companies listed on U.S. stock exchanges. We will use the Adjusted Close prices to account for dividends and stock splits, providing a "true" reflection of market value over time. This dataset is the cornerstone of our project, acting as the primary benchmark against which we will measure the correlation and impact of the macroeconomic indicators pulled from FRED.
+
+### **Kaggle Clause**
+We did not use Kaggle.
 
 ## Timeline
 The following schedule outlines the tasks, descriptions, and responsibilities for the duration of the project.
 
 ### **Week 1: Data Acquisition & Cleaning**
 
-* **API Integration:** Access the FRED API and Yahoo Finance public API to pull five-year historical data for interest rates, CPI, CCI, and S&P 500 price levels.
+* **API Integration:** Access the FRED API and Yahoo Finance public API to pull historical data for interest rates, CPI, unemployment rate, and S&P 500 price levels.
 
 * **Data Conversion:** Convert raw API responses into structured CSV files for data processing.
 
@@ -99,11 +102,14 @@ While the aim of this project is to uncover meaningful patterns & trends, there 
 
 * **Correlation vs Causation**: One major limitation is that stock prices are influenced by a variety of factors, including corporate earnings, geopolitical events, investor sentiment, and many more. These all fall outside the scope of macro-economic indicators that we will be analyzing.
 
-* **Data Mismatch**: Another issue that we will have to deal with is the mismatch between our two data sources. S&P 500 data is available on a daily basis, but most macro indicators from FRED (such as CPI or CCI) are only updated monthly or quarterly. This will require us to smooth out data manually during pre-processing.
-
-* **Historical Scope**: Since we will focus on a 5 year window, our analysis provides a snapshot of the current economic environment but may not capture how these correlations behave during different long-term cycles, such as major recessions or periods of hyper-inflation.
+* **Data Mismatch**: Another issue that we will have to deal with is the mismatch between our two data sources. S&P 500 data is available on a daily basis, but most macro indicators from FRED (such as unemployment rate or CPI) are only updated monthly or quarterly. This will require us to smooth out data manually during pre-processing.
 
 ## Gaps
 
+While our current plan provides a strong base for our analysis, we have identified several gaps that could be addressed to improve our findings.
+
+**Missing Internal Data:** Our current datasets focus heavily on broad economic factors. However, the S&P 500 is also significantly driven by micro-economic factors such as corporate earnings reports and profit margins. The lack of company-level fundamental data means we may miss the internal drivers of market performance.
+
+**Advanced Modeling:** We are currently planning to utilize standard correlation and linear regression techniques. However, financial time-series data is often non-linear and may be better analyzed by using more advanced methods, such as Machine Learning models or specific time-series forecasting. 
 
 
