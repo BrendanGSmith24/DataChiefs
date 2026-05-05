@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 echo "Starting full pipeline..."
 
@@ -10,5 +11,8 @@ python Scripts/clean_merge_fred_data.py
 
 echo "Running analysis..."
 python Scripts/analysis.py
+
+echo "Running regression..."
+python Scripts/regression.py
 
 echo "Pipeline complete."

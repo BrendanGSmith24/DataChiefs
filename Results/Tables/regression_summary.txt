@@ -1,0 +1,19 @@
+Regression Model Results
+========================
+
+Model Comparison:
+                  model        r2      mae     rmse
+      Linear Regression -0.042864 0.022459 0.031350
+Random Forest Regressor  0.036582 0.022703 0.030132
+
+Linear Regression Coefficients:
+          feature  linear_regression_coefficient
+        inflation                       0.013499
+   fed_funds_rate                       0.004949
+unemployment_rate                       0.007429
+
+Random Forest Feature Importance:
+          feature  random_forest_importance
+        inflation                  0.600748
+unemployment_rate                  0.247601
+   fed_funds_rate                  0.151651
