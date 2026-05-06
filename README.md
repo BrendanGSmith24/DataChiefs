@@ -211,7 +211,12 @@ In the root directory of the repository, create a file named `.env`. Inside `.en
 To install the required Python packages to recreate this project use `pip install -r requirements.txt` all packages used are in `requirements.txt`
 
 5. Run the Full Workflow
-The project workflow is automated through the shell script `./run_all.sh` which executes the full pipeline in sequential order.
+The project workflow is automated through a shell script. Before running the workflow, use
+- `chmod +x run_all.sh` 
+This grants permission to run the workflow script directly from the command line. 
+Then use 
+- `./run_all.sh` 
+This executes the full pipeline in sequential order.
 
 6. Expected Output Files
 - Raw API data:
