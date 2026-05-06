@@ -1,4 +1,5 @@
 # Studying Macroeconomic Indicators & Their Impact on S&P 500 Returns
+This product uses the FRED® API but is not endorsed or certified by the Federal Reserve Bank of St. Louis
 
 ## Contributors
 - Team: Data Chiefs
@@ -20,11 +21,13 @@ In this project, we really emphasized being as transparent as possible. Every de
 ### Overview
 This project uses four datasets obtained from the Federal Reserve Bank of St. Louis (https://fred.stlouisfed.org/) to examine the relationship between macroeconomic conditions and S&P 500 market performance. The datasets include the Consumer Price Index (CPI), Federal Funds Rate (FEDFUNDS), Unemployment Rate (UNRATE), and S&P 500 Index (SP500). Each dataset captures a different aspect of the broader economic environment, representing inflation, monetary policy, labor market conditions, and equity market price level.
 
-These datasets complement each other by providing useful information needed to evaluate whether macroeconomic indicators help explain changes in equity market returns. The S&P 500 is used as the primary outcome variable, while inflation, interest rates, and unemployment serve as explanatory macroeconomic indicators.
+These datasets complement each other by providing useful information needed to evaluate whether macroeconomic indicators help explain changes in equity market returns. The S&P 500 is used as the primary outcome variable, while inflation, interest rates, and unemployment serve as explanatory macroeconomic feature variables.
 
-All datasets contain a date field, which allows them to be merged using time as the primary key. The primary difference between the datasets is their reporting frequency. The S&P 500 is reported daily while the macroeconomic indicators are reported monthly. To address this, all data was standardized to a monthly time scale prior to integration. The datasets were first combined into an integrated dataset using a shared `month` variable as the common key.
+All datasets contain a date field, which allows them to be merged using time as the primary key. The primary difference between the datasets is their reporting frequency. The S&P 500 is reported daily while the macroeconomic indicators are reported monthly. To address this, all data was standardized to a monthly time scale prior to integration. The datasets were first combined into an integrated dataset using a shared `month` variable as the primary key.
 
-The final dataset used for analysis and regression modeling is `Data_API/Integrated/fred_macro_analysis_ready.csv`.
+The final dataset used for analysis and regression modeling is 
+- `Data_API/Integrated/fred_macro_analysis_ready.csv`.
+
 ### CPI Dataset
 The Consumer Price Index (CPI) dataset is the CPIAUCSL series obtained from the FRED API (https://fred.stlouisfed.org/series/CPIAUCSL). This data measures the average change over time in prices paid by urban consumers for a broad basket of goods and services and serves as a primary indicator of inflation.
 
@@ -33,14 +36,48 @@ The dataset is structured as a time series with two fields, a date column and a 
 Within the repository, the CPI dataset is stored at two different stages of the data pipeline
 - `Data_API/Raw/CPI.csv` (raw data pulled from the FRED API)
 - `Data_API/Cleaned/CPI.csv` (cleaned dataset)
-### FEDFUNDS Dataset
+### Federal Funds Dataset
 The Federal Funds Rate dataset is the FEDFUNDS series obtained from the FRED API (https://fred.stlouisfed.org/series/FEDFUNDS). This dataset represents the effective federal funds rate, which is the interest rate at which banking institutions lend balances to each other overnight and serves as a key indicator of U.S. monetary policy.
 
 The dataset is structured as a time series with two fields, a date column and a numeric value representing the interest rate level. The data is reported at a monthly frequency and is not seasonally adjusted.
 
-Within the repository, the FEDFUNDS dataset is stored at different stages of the data pipeline
+Within the repository, the FEDFUNDS dataset is stored at two different stages of the data pipeline
 - `Data_API/Raw/FEDFUNDS.csv` (raw data pulled from the FRED API)
 - `Data_API/Cleaned/FEDFUNDS.csv` (cleaned dataset)
+### Unemployment Rate Dataset
+The Unemployment Rate dataset is the UNRATE series obtained from the FRED API (https://fred.stlouisfed.org/series/UNRATE). This dataset measures the percentage of the total labor force that is unemployed, but they are actively seeking employment. This indicator serves as a key indicator of labor market conditions.
+
+The dataset is structured as a time series with two fields, a date column and a numeric value representing the unemployment rate as a percentage of the labor force. The data is reported at a monthly frequency and is seasonally adjusted.
+
+Within the repository, the UNRATE dataset is stored at two different stages of the data pipeline
+- `Data_API/Raw/UNRATE.csv` (raw data pulled from the FRED API)
+- `Data_API/Cleaned/UNRATE.csv` (cleaned dataset)
+### S&P 500 Dataset
+The S&P 500 dataset is the SP500 series obtained from FRED API (https://fred.stlouisfed.org/series/SP500). This dataset represents the daily closing value of the S&P 500 index, which serves as a broad measure of equity market performance in the United States.
+
+The dataset is structured as a time series with two fields, a date column and a numeric value representing the index level. Unlike the macroeconomic indicator datasets, the S&P 500 data is reported at a daily frequency.
+
+Within the repository, the SP500 dataset is stored at two different stages of the data pipeline
+- `Data_API/Raw/SP500.csv` (raw data pulled from the FRED API)
+- `Data_API/Cleaned/SP500.csv` (cleaned and averaged into a monthly dataset)
+### Data Usage
+All of the datasets are integrated using a common primary key based off time (`month`) to create a unified dataset of macroeconomic indicators and market performance. The datasets have different reporting frequencies, so the S&P 500 data (daily) was aggregated to a monthly average to align with the monthly reporting of macroeconomic indicators (CPI, FEDFUNDS, and UNRATE).
+
+The first stage of integration produces the dataset
+- `Data_API/Integrated/fred_macro_integrated.csv`
+ At this stage, the dataset represents a structured combination of cleaned economic and financial data, but it does not yet include feature variables useful for statistical analysis.
+
+A second dataset is then created
+- `Data_API/Integrated/fred_macro_analysis_ready.csv`
+This dataset is derived from the merged and cleaned dataset. It includes additional transformations that make it more useful for analysis. Specifically, the S&P 500 index is converted into monthly returns, and CPI values are transformed into inflation rates. These transformations convert time series and level data into percentage changes, which allows for better comparison between variables.
+
+The analysis ready dataset is used for all visualization, statistical analysis, and regression modeling. In this project, S&P 500 returns serve as the primary outcome variable, while inflation, interest rates, and unemployment serve as feature variables.
+### Legal & Ethical Constraints
+All data used in this project is obtained from the Federal Reserve Economic Data (FRED) API and is subject to the FRED Terms of Use. By using the API, we agreed to comply with all applicable legal, copyright, and usage restrictions associated with each data series. Some datasets may be owned by third parties such as Standard and Poors.
+
+The project uses the FRED API in a compliant manner by retrieving data programmatically for analysis without redistributing proprietary content. Required attribution is acknowledged, and the project does not imply endorsement by the Federal Reserve Bank of St. Louis.
+
+To ensure responsible data handling, the FRED API key is stored securely in a `.env` file and is not included in the public repository. Additionally, checksum hashes are generated for downloaded datasets and stored in `Results/Tables/fred_checksums.txt` to verify data integrity and reproducibility.
 
 ## Data Quality
 
