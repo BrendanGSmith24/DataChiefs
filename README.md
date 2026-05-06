@@ -99,6 +99,20 @@ On the modeling side, the Linear Regression achieved an R^2 value of −0.043, a
 
 ## Challenges
 
+The hardest part of this project wasn't the actual modeling. Instead, it was the data curation work that had to happen before we could even build a regression model. We had to wrangle four different datasets into one trustworthy file, which led to two main hurdles. Both of them  required us to make a deliberate choice about how to handle the data.
+
+**Time Frequency Mismatch**
+
+The most significant challenge was the difference in how our sources report data. The S&P 500 is a live market, so it records a closing price for every single business day. However, the macro indicators like inflation and unemployment are only published once a month. This essentially caused a mismatch in what the data actually measures. One row of S&P 500 data represents a single day, while a row of unemployment data represents a whole month. If we tried to join them using raw dates, we would have ended up with massive duplication or lost almost all of our stock data.
+
+We decided to solve this by turning the daily S&P 500 values into a monthly average. This kept all the information from the stock market without dropping any trading days. It also let us match the granularity of the FRED data without having to "invent" daily values for things like inflation, which wouldn't have been accurate.
+
+**Date Normalization**
+
+Even after we moved everything to a monthly scale, the timestamps still didn't match up. FRED exports dates that always start on the first of the month, like 2023-01-01. The S&P 500 data, because it was averaged from daily records, often produced dates at the end or middle of the month. A basic join would have returned zero results because the computer sees those as different days, even though they represent the same month.
+
+To fix this, we stripped each timestamp down to a simple month key in YYYY-MM format before joining. This acted as a common language between the sources. It discarded the day-level precision that we didn't need and created a join key that worked every time. Although this step was simple, it ended up being crucial.
+
 ## Reproducibility
 
 ## References
