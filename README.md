@@ -80,15 +80,28 @@ The project uses the FRED API in a compliant manner by retrieving data programma
 To ensure responsible data handling, the FRED API key is stored securely in a `.env` file and is not included in the public repository. Additionally, checksum hashes are generated for downloaded datasets and stored in `Results/Tables/fred_checksums.txt` to verify data integrity and reproducibility.
 
 ## Data Quality
-### Data Quality Assesment Approach
+### Data Quality Assessment Approach
+
 We began our data quality phase of our project by performing a script programmatically using `Scripts/clean_merge_fred_data.py`. This script is responsible for loading each dataset, validating its structure, and generating a summary quality report saved as `Results/Tables/fred_data_quality_report.csv`.
 The script evaluates multiple aspects of data quality, including the number of rows and columns in each dataset, the start and end dates of the time series, if and how many missing values or duplicated time observations there are.
 
-We chose a to use a script approach instead of tools like OpenRefine to ensure full reproducibility and automation. Our datasets were retrieved dynamically from the FRED API, so using a Python workflow allows the entire data acquisition, validation, and integration process to be executed consistently with a single command (`run_all.sh`). This guarantees that data quality checks are applied identically each time data is fetched, inspected, cleaned and merged. This script allowed our analysis and regressions to be repeated accurately.
-### Data Quality Assesment
+We chose a to use a script approach instead of tools like OpenRefine to ensure full reproducibility and automation. Our datasets were retrieved dynamically from the FRED API, so using a Python workflow allows the entire data acquisition, validation, and integration process to be executed consistently with a single command (`run_all.sh`). This guarantees that data quality checks are applied identically each time data is fetched, inspected, cleaned and merged. Additionally, SHA-256 checksums were generated for each raw file at the time of acquisition and stored in Results/Tables/fred_checksums.txt to verify that the source data has not changed between runs. This script allowed our analysis and regressions to be repeated accurately.
+
+### Data Quality Assessment
+
 The data quality report generated from the script `clean_merge_fred_data.py` confirms that all datasets are structurally complete and consistent. Each dataset contains exactly two columns (a date field and a numeric value), with no missing values and no duplicate time observations. This indicates that the datasets are reliable and suitable for time series analysis. This was one of the major benefits of using FRED's API as our data source.
 
 Despite this overall consistency, several important differences exist across the datasets that required design choices before integration. First, there are differences in the amount of time each dataset covers. The CPI, FEDFUNDS, and UNRATE datasets span multiple decades, beginning in 1947, 1948, and 1954 while the SP500 dataset begins in 2016. This mismatch meant that not all datasets share a common time horizon. Our first design choice meant that we needed to use only data with overlapping time periods. Second, there are differences in how often the data is reported. The SP500 dataset is reported at a daily frequency, while the macroeconomic datasets are reported monthly. This creates a structural inconsistency that prevents direct merging without transformation. These differences are not data quality issues, but rather characteristics of the data sources. As a result, we chose to standardize the datasets prior to integration. Specifically, all datasets were aligned to a common monthly time scale, and the final dataset was restricted to a consistent and overlapping time period to ensure comparability across variables.
+
+| Dataset  | Rows | Columns | Start Date | End Date   | Missing Values | Duplicates |
+|----------|------|---------|------------|------------|----------------|------------|
+| CPI      | 950  | 2       | 1947-01-01 | 2025-03-01 | 0              | 0          |
+| FEDFUNDS | 862  | 2       | 1954-07-01 | 2025-04-01 | 0              | 0          |
+| UNRATE   | 938  | 2       | 1948-01-01 | 2025-03-01 | 0              | 0          |
+| SP500    | 121  | 2       | 2016-05-01 | 2026-05-01 | 0              | 0          |
+
+Although the datasets contain no missing values or duplicates, several months represent extreme observations that are worth noting. The COVID-19 period in early 2020 produced the most pronounced values across all three macroeconomic indicators simultaneously: unemployment spiked to approximately 14.7%, the Federal Funds Rate was cut to near zero, and the S&P 500 experienced a sharp drawdown before recovering within the same year. The 2022–2023 rate-hiking cycle similarly produced Federal Funds Rate values not seen since 2007. We inspected these observations and confirmed they are accurate, well-documented economic events rather than data entry errors, so they were retained in full. Excluding them would have removed the most macroeconomically significant months in the dataset and introduced its own form of bias.  
+
 ### Seasonal Adjustment Consideration
 The datasets used in this project differ in whether they are seasonally adjusted. The CPI and Unemployment Rate datasets are seasonally adjusted, while the Federal Funds dataset is not seasonally adjusted. The SP500 dataset represents observed market values so it is not seasonally adjusted.
 
@@ -97,8 +110,6 @@ After further research into what seasonal adjustment means we found that it remo
 The presence of both seasonally adjusted and non-seasonally adjusted data introduces a difference in how variables reflect temporary fluctuations. We found that this does not represent a data quality issue, but it reflects differences in how the data is defined and reported by the source.
 
 These differences were considered acceptable for this analysis, as each dataset is used according to its intended interpretation, and the focus of the project is on general relationships between macroeconomic indicators and market performance rather than precise seasonal effects.
-
-
 
 ## Data Cleaning
 
