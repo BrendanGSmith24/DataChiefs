@@ -2,12 +2,11 @@
 This product uses the FRED® API but is not endorsed or certified by the Federal Reserve Bank of St. Louis
 
 ## Contributors
-- Team: Data Chiefs
 - Brendan Smith
 - Christopher Boukalis
 
 ## Summary
-Financial markets and macroeconomic policy are a constant topic of conversation in the news, earnings calls, and central bank briefings. Most of this discussion is based on the idea that economic indicators like interest rates, inflation, and unemployment can help us understand or even predict how the stock market will behave in the future. Our team built this project to test out that theory through creating a comprehensive and reproducible pipeline. By pulling data directly from the Federal Reserve Economic Data (FRED) API and historical prices from Yahoo Finance, we were able to treat the relationship between the economy and the S&P 500 as a hypothesis that needed to be tested through careful data curation and statistical modeling.
+Financial markets and macroeconomic policy are a constant topic of conversation in the news, earnings calls, and central bank briefings. Most of this discussion is based on the idea that economic indicators like interest rates, inflation, and unemployment can help us understand or even predict how the stock market will behave in the future. Our team built this project to test out that theory through creating a comprehensive and reproducible pipeline. By pulling data directly from the Federal Reserve Economic Data (FRED) API, we were able to treat the relationship between the economy and the S&P 500 as a hypothesis that needed to be tested through careful data curation and statistical modeling.
 
 For our project, we decided to focus on two main research questions. First, we were curious to see how strongly specific indicators actually correlated with monthly S&P 500 returns. We decided to select the Consumer Price Index (CPI), the Federal Funds Rate, and the Unemployment Rate, as our main variables of interest. Second, we wanted to know if those relationships stay the same over time or if they shift during major market shocks like COVID-19 in 2020, or the aggressive interest rate hikes in 2022. 
 
@@ -127,6 +126,25 @@ On the modeling side, the Linear Regression achieved an R^2 value of −0.043, a
 
 ## Future Work
 
+Our deep-dive into the relationship between the S&P 500 and Federal Reserve macroeconomic indicators set us up with a useful baseline for understanding how equity markets respond to fiscal and monetary data. Although our findings showed that basic linear and nonlinear regressions provided insignificant predictive power, these results are not an endpoint. Instead, they highlight critical lessons for us regarding data frequency and market efficiency.
+
+**Lessons Learned in Data Curation**
+
+The primary lesson learned during this project centered on the importance of data frequencies. When we began managing our dataset, the dependent variable (S&P 500) was recorded daily while the independent variables (CPI, Unemployment) were reported monthly, causing a significant challenge with the alignment.
+
+Quickly, we realized that simply "joining" the data on a date column was not going to work for financial curation. Decisions regarding whether to use the first day of the month, the last trading day, or an average of the month significantly impact the integrity of the results. We ultimately chose to resample the S&P 500 to the average of each month to reflect the market's overall verdict after absorbing that month's economic news. We knew that if we didn’t clearly explain the logic behind our resampling, our results would be much more difficult to reproduce academically. 
+
+We also realized an important fact about modeling while we created our linear & non-linear regressions. The lesson was essentially that increasing the complexity of a model cannot overcome ‘stale’ data. If the data itself doesn’t contain a predictive signal, even more advanced Machine Learning techniques like Random Forest and XGBoost might still fail to significantly improve accuracy. 
+
+**Potential Future Work**
+
+To build upon the foundation that we created, we have selected four valuable methods for future research that would enhance both the analytical depth and the curation quality of the repository.
+
+- *Predictive Lag-Based Analysis:* One thing that can be used to potentially improve the regression component of our project is to implement additional lagged feature variables. Future work should pivot from "correlation" to "prediction" by introducing additional lagged or rolling variables. By using T-2 or T-3 macroeconomic data to predict T+1 S&P 500 returns, we can test if these indicators act as leading signals, and might improve accuracy overall.
+- *Time Expansion & Cycle Testing:* Our current dataset focuses on a time frame starting in June 2016. While this period included the COVID-19 volatility and following interest rate hikes, it represents a specific “era” of very unpredictable market behavior. In the future, one potential modification could be to extend this study back to the 1990s or the 2008 Financial Crisis. Testing our models across multiple full-market cycles would determine if the correlations we found are permanent or simply symptoms of the current environment.
+- *Sector-Level Granularity:* The S&P 500 is an aggregate of many different industry sectors with varying sensitivities to macro trends. Technology growth stocks are typically more sensitive to interest rates than utility stocks. Future work should try to apply our cleaning and merging logic to specific Sector ETFs (like Tech, Energy, Retail) to identify if macroeconomic indicators "hide" within the broad index while exerting massive influence on specific industries.
+- *Forward-Looking Sentiment:* A significant improvement would involve integrating "forward-looking" survey data, such as the University of Michigan Consumer Sentiment Survey or inflation expectation indices. Unlike government reports that record what has already happened, these surveys capture public expectations of the future, which often drive market momentum. From a curation perspective, this would require developing new workflows to normalize qualitative survey indices and align them with quantitative financial time-series.
+  
 ## Challenges
 
 The hardest part of this project wasn't the actual modeling. Instead, it was the data curation work that had to happen before we could even build a regression model. We had to wrangle four different datasets into one trustworthy file, which led to two main hurdles. Both of them  required us to make a deliberate choice about how to handle the data.
@@ -146,10 +164,6 @@ To fix this, we stripped each timestamp down to a simple month key in YYYY-MM fo
 ## Reproducibility
 
 ## Data Visualization Reproducability
-
-## References
-
-## References
 
 ## References
 
