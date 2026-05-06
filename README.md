@@ -85,6 +85,16 @@ To ensure responsible data handling, the FRED API key is stored securely in a `.
 
 ## Findings
 
+The correlation analysis showed a mixed picture across the three macro indicators. The variable that showed the strongest relationship with the S&P 500 was unemployment rate, with a correlation score of 0.249. On the surface, this seems to be the opposite of what most people would expect. However, this result was mostly shaped by the COVID-19 recovery period, when unemployment spiked in early 2020, equity markets simultaneously had one of their fastest recoveries in history. Thus, although this seems abnormal at first, the unemployment scatter plot actually makes this relationship visible. Most data points are clustered around low unemployment levels, while a handful of high-unemployment months sit at higher return values, which gives the trend line a positive slope.
+
+Inflation, measured via the CPI, produced a near-zero correlation of −0.017, essentially showing that month-to-month changes in consumer prices carry almost no relationship with the S&P 500 returns. The Federal Funds Rate correlation was similarly very low, at only 0.045. The correlation heatmap displays these results clearly: the row corresponding to sp500_return is washed out in light blue across all three indicators, while the stronger relationship visible in the matrix is actually between the Federal Funds Rate and unemployment (−0.43), which reflects the Fed's rate-cutting response to labor market deterioration, a policy unrelated to how equities perform.
+
+The 12-month rolling correlation chart between inflation and S&P 500 returns shows an important relationship that would typically be hard to notice. The relationship between the two variables was moderately positive through the 2018–2020 period, spiked briefly near 0.9 during the initial pandemic volatility, then decreased significantly through 2021–2023 as the Fed began to aggressively hike rates in response to post-covid inflation. By 2024 the rolling correlation had recovered back toward zero, showing us that the direction and strength of this relationship is dependent on different factors, not something a simple linear model can effectively capture.
+
+On the modeling side, the Linear Regression achieved an R^2 value of −0.043, and the Random Forest improved slightly to 0.037. These near-zero R^2 values don’t represent a failure of the pipeline, in fact, they’re an important finding for our study. Macroeconomic indicators like CPI, the Federal Funds Rate, and the Unemployment Rate are lagging signals by design, which means that they describe economic conditions that have already occurred. Equity prices, on the other hand, are forward-pricing indicators that incorporate expectations well before those conditions appear in any government report. Essentially, the models clarify one important fact; once you control for the dataset's time structure, these indicators contribute almost no incremental predictive power.
+
+![Average Residential Price by Year](./Results/Figures/findings_viz.png)
+
 ## Future Work
 
 ## Challenges
