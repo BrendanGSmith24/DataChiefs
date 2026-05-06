@@ -80,14 +80,12 @@ To ensure responsible data handling, the FRED API key is stored securely in a `.
 
 ## Data Quality
 ### Data Quality Assessment Approach
-
 We began our data quality phase of our project by performing a script programmatically using `Scripts/clean_merge_fred_data.py`. This script is responsible for loading each dataset, validating its structure, and generating a summary quality report saved as `Results/Tables/fred_data_quality_report.csv`.
 The script evaluates multiple aspects of data quality, including the number of rows and columns in each dataset, the start and end dates of the time series, if and how many missing values or duplicated time observations there are.
 
 We chose a to use a script approach instead of tools like OpenRefine to ensure full reproducibility and automation. Our datasets were retrieved dynamically from the FRED API, so using a Python workflow allows the entire data acquisition, validation, and integration process to be executed consistently with a single command (`run_all.sh`). This guarantees that data quality checks are applied identically each time data is fetched, inspected, cleaned and merged. Additionally, SHA-256 checksums were generated for each raw file at the time of acquisition and stored in Results/Tables/fred_checksums.txt to verify that the source data has not changed between runs. This script allowed our analysis and regressions to be repeated accurately.
 
 ### Data Quality Assessment
-
 The data quality report generated from the script `clean_merge_fred_data.py` confirms that all datasets are structurally complete and consistent. Each dataset contains exactly two columns (a date field and a numeric value), with no missing values and no duplicate time observations. This indicates that the datasets are reliable and suitable for time series analysis. This was one of the major benefits of using FRED's API as our data source.
 
 Despite this overall consistency, several important differences exist across the datasets that required design choices before integration. First, there are differences in the amount of time each dataset covers. The CPI, FEDFUNDS, and UNRATE datasets span multiple decades, beginning in 1947, 1948, and 1954 while the SP500 dataset begins in 2016. This mismatch meant that not all datasets share a common time horizon. Our first design choice meant that we needed to use only data with overlapping time periods. Second, there are differences in how often the data is reported. The SP500 dataset is reported at a daily frequency, while the macroeconomic datasets are reported monthly. This creates a structural inconsistency that prevents direct merging without transformation. These differences are not data quality issues, but rather characteristics of the data sources. As a result, we chose to standardize the datasets prior to integration. Specifically, all datasets were aligned to a common monthly time scale, and the final dataset was restricted to a consistent and overlapping time period to ensure comparability across variables.
@@ -111,7 +109,43 @@ The presence of both seasonally adjusted and non-seasonally adjusted data introd
 These differences were considered acceptable for this analysis, as each dataset is used according to its intended interpretation, and the focus of the project is on general relationships between macroeconomic indicators and market performance rather than precise seasonal effects.
 
 ## Data Cleaning
+Data cleaning and preparation were performed programmatically using `Scripts/clean_merge_fred_data.py` and `Scripts/analysis.py`. We chose a script-based workflow instead of manual cleaning tools to ensure that every step of cleaning, merging, and transformation could be reproduced consistently through the automated `run_all.sh` command.
 
+The first stage of cleaning focused on structural standardization. Each dataset retrieved from the FRED API was loaded as a time series containing a date field and a numeric value field. Date columns were converted into a consistent datetime format, sorted chronologically, and renamed into a shared schema to simplify integration and analysis.
+
+The next major cleaning step involved time normalization. The CPI, FEDFUNDS, and UNRATE datasets are reported monthly, while the SP500 dataset is reported daily. To align the datasets to a common time scale, the S&P 500 observations were aggregated into monthly averages. To aggregate the monthly average, we took the average of each reported price level within each month. This allowed all datasets to be merged consistently using the primary key `month`.
+
+After standardization, the datasets were merged into a single integrated dataset containing inflation, interest rate, unemployment, and equity market variables observed over the same monthly periods. Due to the datasets having different amounts of time covered, the integrated dataset was restricted to the overlapping time period beginning in June 2016 to ensure consistency across all variables.
+
+Additional transformations were applied in `Scripts/analysis.py` to create the final analysis dataset. The S&P 500 monthly averages were converted into monthly returns using percentage change, and CPI values were converted into monthly inflation rates. These transformations convert raw index levels into percentage change variables that are more suitable for correlation analysis and regression modeling. Percentage change variables were used for CPI and S&P 500 returns, because they better capture changes in economic and market conditions over time and allow variables measured on different scales to be compared consistently in regression analysis.
+
+The raw datasets did not contain missing values or duplicate observations. Missing values were only introduced during percentage change calculations, because the first observation does not have a previous month available for comparison. These rows were removed prior to statistical analysis and regression modeling.
+
+The cleaned and merged dataset is saved as:
+
+- `Data_API/Integrated/fred_macro_integrated.csv`
+
+The final analysis-ready dataset used for visualization and regression modeling is saved as:
+
+- `Data_API/Integrated/fred_macro_analysis_ready.csv`
+
+### Cleaning Scripts and Their Outputs
+Cleaning scripts:
+- `Scripts/clean_merge_fred_data.py`
+- `Scripts/analysis.py`
+The primary cleaning and merging workflow is implemented in `Scripts/clean_merge_fred_data.py`. This script standardizes dataset structure, converts date fields into a common monthly format, aggregates daily S&P 500 observations into monthly averages, generates the data quality report, merges all datasets using the `month` variable, and creates checksum hashes for reproducibility verification.
+
+Additional transformations are performed in `Scripts/analysis.py`. This script transforms CPI and S&P500 levels into perecent change variables for inflation and S&P 500 returns. The script also removes the first rows that generated missing values from turning them into percent levels. Last, it produces the final analysis dataset used for visualization and regression modeling.
+
+Intermediate outputs:
+- `Data_API/Cleaned/CPI.csv`
+- `Data_API/Cleaned/FEDFUNDS.csv`
+- `Data_API/Cleaned/UNRATE.csv`
+- `Data_API/Cleaned/SP500.csv`
+
+Integrated datasets:
+- `Data_API/Integrated/fred_macro_integrated.csv`
+- `Data_API/Integrated/fred_macro_analysis_ready.csv`
 
 ## Findings
 The correlation analysis showed a mixed picture across the three macro indicators. The variable that showed the strongest relationship with the S&P 500 was unemployment rate, with a correlation score of 0.249. On the surface, this seems to be the opposite of what most people would expect. However, this result was mostly shaped by the COVID-19 recovery period, when unemployment spiked in early 2020, equity markets simultaneously had one of their fastest recoveries in history. Thus, although this seems abnormal at first, the unemployment scatter plot actually makes this relationship visible. Most data points are clustered around low unemployment levels, while a handful of high-unemployment months sit at higher return values, which gives the trend line a positive slope.

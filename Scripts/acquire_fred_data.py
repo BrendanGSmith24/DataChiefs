@@ -1,16 +1,20 @@
 import os
 import hashlib
-import requests
+from pathlib import Path
+
 import pandas as pd
+import requests
 from dotenv import load_dotenv
 
-from pathlib import Path
 load_dotenv(dotenv_path=Path(__file__).resolve().parents[1] / ".env")
 
 FRED_API_KEY = os.getenv("FRED_API_KEY")
 
 RAW_DIR = "Data_API/Raw"
 os.makedirs(RAW_DIR, exist_ok=True)
+
+OBSERVATION_START = "2016-05-01"
+OBSERVATION_END = "2026-05-01"
 
 FRED_SERIES = {
     "CPI": "CPIAUCSL",
@@ -37,6 +41,8 @@ def get_fred_series(series_id, output_name):
         "series_id": series_id,
         "api_key": FRED_API_KEY,
         "file_type": "json",
+        "observation_start": OBSERVATION_START,
+        "observation_end": OBSERVATION_END,
     }
 
     response = requests.get(url, params=params, timeout=60)
