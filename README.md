@@ -2,8 +2,8 @@
 This product uses the FRED® API but is not endorsed or certified by the Federal Reserve Bank of St. Louis
 
 ## Contributors
-- Brendan Smith
-- Christopher Boukalis
+- **Brendan Smith** -  Built the data acquisition pipeline, the cleaning and merging script, the regression model, and the run_all.sh shell script that re-executes the full workflow end-to-end. Also authored the Data Profile, Data Quality, and Data Cleaning sections of the README.
+- **Christopher Boukalis** - Developed the data cleaning and merging logic, authored the Summary, Findings, Challenges, Future Work, and References sections of the README, and created the project's data dictionary documenting all raw, cleaned, and integrated datasets.
 
 ## Summary
 Financial markets and macroeconomic policy are a constant topic of conversation in the news, earnings calls, and central bank briefings. Most of this discussion is based on the idea that economic indicators like interest rates, inflation, and unemployment can help us understand or even predict how the stock market will behave in the future. Our team built this project to test out that theory through creating a comprehensive and reproducible pipeline. By pulling data directly from the Federal Reserve Economic Data (FRED) API, we were able to treat the relationship between the economy and the S&P 500 as a hypothesis that needed to be tested through careful data curation and statistical modeling.
@@ -205,12 +205,12 @@ The project is designed to be reproduced from a cloned repository using the prov
  To recreate this workflow, you must obtain your own FRED API key from the Federal Reserve Bank of St. Louis. We did not include the API key in this repository to follow FRED's terms of use.
 
 3. Insert API Key to .env File
-In the root directory of the repository, create a file named `.env`. Inside `.env`, add the lines `FRED_API_KEY=(insert your API key here with no quotes or spaces)` We used .env to represent enviroment variables that should never go public on GitHub.
+In the root directory of the repository, create a file named `.env`. Inside .env, add a single line in the form FRED_API_KEY=your_key_here. For example, if your key is abc123xyz, the file should contain exactly: FRED_API_KEY=abc123xyz (no quotes, no spaces, no parentheses).
 
-4. Install Dependencies
+5. Install Dependencies
 To install the required Python packages to recreate this project use `pip install -r requirements.txt` all packages used are in `requirements.txt`
 
-5. Run the Full Workflow
+6. Run the Full Workflow
 The project workflow is automated through a shell script. Before running the workflow, use
 - `chmod +x run_all.sh` 
 This grants permission to run the workflow script directly from the command line. 
