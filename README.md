@@ -201,10 +201,10 @@ The project is designed to be reproduced from a cloned repository using the prov
 `git clone https://github.com/BrendanGSmith24/DataChiefs.git` then use 
 `cd DataChiefs`
 
-2. Create .Env File
+2. Create .env File
  To recreate this workflow, you must obtain your own FRED API key from the Federal Reserve Bank of St. Louis. We did not include the API key in this repository to follow FRED's terms of use.
 
-3. Insert API Key to .Env File
+3. Insert API Key to .env File
 In the root directory of the repository, create a file named `.env`. Inside `.env`, add the lines `FRED_API_KEY=(insert your API key here with no quotes or spaces)` We used .env to represent enviroment variables that should never go public on GitHub.
 
 4. Install Dependencies
@@ -216,7 +216,7 @@ The project workflow is automated through the shell script `./run_all.sh` which 
 6. Expected Output Files
 - Raw API data:
 - Data_API/Raw/CPI.csv
-- -Data_API/Raw/FEDFUNDS.csv
+- Data_API/Raw/FEDFUNDS.csv
 - Data_API/Raw/UNRATE.csv
 - Data_API/Raw/SP500.csv
 #### Cleaned data:
