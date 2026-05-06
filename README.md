@@ -1,4 +1,4 @@
-# Studying Macroeconomic Indicators & Their Impact on S&P 500 Returns
+# Macroeconomic Trends & S&P 500 Returns
 This product uses the FRED® API but is not endorsed or certified by the Federal Reserve Bank of St. Louis
 
 ## Contributors
@@ -148,4 +148,38 @@ To fix this, we stripped each timestamp down to a simple month key in YYYY-MM fo
 ## Data Visualization Reproducability
 
 ## References
+
+## References
+
+## References
+
+U.S. Bureau of Labor Statistics. (2025). Consumer Price Index for All Urban Consumers: 
+All Items in U.S. City Average (CPIAUCSL) [Data set]. Federal Reserve Bank of St. Louis. 
+https://fred.stlouisfed.org/series/CPIAUCSL
+
+Board of Governors of the Federal Reserve System. (2025). Federal Funds Effective Rate 
+(FEDFUNDS) [Data set]. Federal Reserve Bank of St. Louis. 
+https://fred.stlouisfed.org/series/FEDFUNDS
+
+U.S. Bureau of Labor Statistics. (2025). Unemployment Rate (UNRATE) [Data set]. 
+Federal Reserve Bank of St. Louis. https://fred.stlouisfed.org/series/UNRATE
+
+S&P Dow Jones Indices LLC. (2025). S&P 500 (SP500) [Data set]. Federal Reserve Bank 
+of St. Louis. https://fred.stlouisfed.org/series/SP500
+
+Harris, C. R., Millman, K. J., van der Walt, S. J., et al. (2020). Array programming 
+with NumPy. Nature, 585, 357–362. https://doi.org/10.1038/s41586-020-2649-2
+
+Hunter, J. D. (2007). Matplotlib: A 2D graphics environment. Computing in Science & 
+Engineering, 9(3), 90–95. https://doi.org/10.1109/MCSE.2007.55
+
+Pedregosa, F., Varoquaux, G., Gramfort, A., et al. (2011). Scikit-learn: Machine 
+learning in Python. Journal of Machine Learning Research, 12, 2825–2830. 
+https://jmlr.org/papers/v12/pedregosa11a.html
+
+The pandas development team. (2024). pandas-dev/pandas: Pandas [Software]. Zenodo. 
+https://doi.org/10.5281/zenodo.3509134
+
+Waskom, M. L. (2021). seaborn: Statistical data visualization. Journal of Open Source 
+Software, 6(60), 3021. https://doi.org/10.21105/joss.03021
 
