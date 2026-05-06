@@ -195,9 +195,59 @@ Even after we moved everything to a monthly scale, the timestamps still didn't m
 To fix this, we stripped each timestamp down to a simple month key in YYYY-MM format before joining. This acted as a common language between the sources. It discarded the day-level precision that we didn't need and created a join key that worked every time. Although this step was simple, it ended up being crucial.
 
 ## Reproducibility
-remember to create fixed endpoints
+The project is designed to be reproduced from a cloned repository using the provided scripts and workflow file. The full pipeline downloads data from the FRED API, cleans and integrates the datasets, creates analysis ready variables, generates figures and tables, and runs regression models.
 
-## Data Visualization Reproducability
+1. Clone the Repository
+git clone https://github.com/BrendanGSmith24/DataChiefs.git
+cd DataChiefs
+
+2. Create .Env File
+ To recreate this workflow, you must obtain your own FRED API key from the Federal Reserve Bank of St. Louis. We did not include the API key in this repository to follow FRED's terms of use.
+
+3. Insert API Key to .Env File
+In the root directory of the repository, create a file named .env. Inside .env, add the lines FRED_API_KEY=(insert your API key here with no quotes or spaces) We used .env to represent enviroment variables that should never go public on GitHub.
+
+4. Install Dependencies
+To install the required Python packages to recreate this project use pip install -r requirements.txt all packages used are in `requirements.txt`
+
+5. Run the Full Workflow
+The project workflow is automated through the shell script ./run_all.sh which executes the full pipeline in sequential order.
+
+6. Expected Output Files
+Raw API data:
+Data_API/Raw/CPI.csv
+Data_API/Raw/FEDFUNDS.csv
+Data_API/Raw/UNRATE.csv
+Data_API/Raw/SP500.csv
+Cleaned data:
+Data_API/Cleaned/CPI.csv
+Data_API/Cleaned/FEDFUNDS.csv
+Data_API/Cleaned/UNRATE.csv
+Data_API/Cleaned/SP500.csv
+Integrated and analysis ready data:
+Data_API/Integrated/fred_macro_integrated.csv
+Data_API/Integrated/fred_macro_analysis_ready.csv
+Tables from Analysis:
+Results/Tables/fred_data_quality_report.csv
+Results/Tables/fred_checksums.txt
+Results/Tables/summary_stats.csv
+Results/Tables/correlation_matrix.csv
+Results/Tables/regression_model_comparison.csv
+Results/Tables/linear_regression_coefficients.csv
+Results/Tables/random_forest_feature_importance.csv
+Results/Tables/regression_summary.txt
+Figures from Analysis:
+Results/Figures/correlation_heatmap.png
+Results/Figures/sp500_returns.png
+Results/Figures/scatter_inflation.png
+Results/Figures/scatter_fed_funds_rate.png
+Results/Figures/scatter_unemployment_rate.png
+Results/Figures/rolling_corr_inflation.png
+
+7. Ensure Data Integrity
+Checksum hashes are generated for the downloaded and processed datasets and saved in: 
+Results/Tables/fred_checksums.txt
+The FRED API requests we used have fixed observation dates to improve reproducibility. This helps ensure that future runs retrieve the same date range instead of automatically including newly released observations.
 
 ## References
 
