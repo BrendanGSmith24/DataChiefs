@@ -80,6 +80,25 @@ The project uses the FRED API in a compliant manner by retrieving data programma
 To ensure responsible data handling, the FRED API key is stored securely in a `.env` file and is not included in the public repository. Additionally, checksum hashes are generated for downloaded datasets and stored in `Results/Tables/fred_checksums.txt` to verify data integrity and reproducibility.
 
 ## Data Quality
+### Data Quality Assesment Approach
+We began our data quality phase of our project by performing a script programmatically using `Scripts/clean_merge_fred_data.py`. This script is responsible for loading each dataset, validating its structure, and generating a summary quality report saved as `Results/Tables/fred_data_quality_report.csv`.
+The script evaluates multiple aspects of data quality, including the number of rows and columns in each dataset, the start and end dates of the time series, if and how many missing values or duplicated time observations there are.
+
+We chose a to use a script approach instead of tools like OpenRefine to ensure full reproducibility and automation. Our datasets were retrieved dynamically from the FRED API, so using a Python workflow allows the entire data acquisition, validation, and integration process to be executed consistently with a single command (`run_all.sh`). This guarantees that data quality checks are applied identically each time data is fetched, inspected, cleaned and merged. This script allowed our analysis and regressions to be repeated accurately.
+### Data Quality Assesment
+The data quality report generated from the script `clean_merge_fred_data.py` confirms that all datasets are structurally complete and consistent. Each dataset contains exactly two columns (a date field and a numeric value), with no missing values and no duplicate time observations. This indicates that the datasets are reliable and suitable for time series analysis. This was one of the major benefits of using FRED's API as our data source.
+
+Despite this overall consistency, several important differences exist across the datasets that required design choices before integration. First, there are differences in the amount of time each dataset covers. The CPI, FEDFUNDS, and UNRATE datasets span multiple decades, beginning in 1947, 1948, and 1954 while the SP500 dataset begins in 2016. This mismatch meant that not all datasets share a common time horizon. Our first design choice meant that we needed to use only data with overlapping time periods. Second, there are differences in how often the data is reported. The SP500 dataset is reported at a daily frequency, while the macroeconomic datasets are reported monthly. This creates a structural inconsistency that prevents direct merging without transformation. These differences are not data quality issues, but rather characteristics of the data sources. As a result, we chose to standardize the datasets prior to integration. Specifically, all datasets were aligned to a common monthly time scale, and the final dataset was restricted to a consistent and overlapping time period to ensure comparability across variables.
+### Seasonal Adjustment Consideration
+The datasets used in this project differ in whether they are seasonally adjusted. The CPI and Unemployment Rate datasets are seasonally adjusted, while the Federal Funds dataset is not seasonally adjusted. The SP500 dataset represents observed market values so it is not seasonally adjusted.
+
+After further research into what seasonal adjustment means we found that it removes recurring patterns that occur at regular intervals. For example, employment levels often follow seasonal patterns due to factors such as holiday jobs or industries dependent on weather conditions. By adjusting for these patterns, the CPI and Unemployment Rate provides a more clear view of underlying trends.
+
+The presence of both seasonally adjusted and non-seasonally adjusted data introduces a difference in how variables reflect temporary fluctuations. We found that this does not represent a data quality issue, but it reflects differences in how the data is defined and reported by the source.
+
+These differences were considered acceptable for this analysis, as each dataset is used according to its intended interpretation, and the focus of the project is on general relationships between macroeconomic indicators and market performance rather than precise seasonal effects.
+
+
 
 ## Data Cleaning
 
@@ -114,6 +133,8 @@ Even after we moved everything to a monthly scale, the timestamps still didn't m
 To fix this, we stripped each timestamp down to a simple month key in YYYY-MM format before joining. This acted as a common language between the sources. It discarded the day-level precision that we didn't need and created a join key that worked every time. Although this step was simple, it ended up being crucial.
 
 ## Reproducibility
+
+## Data Visualization Reproducability
 
 ## References
 
