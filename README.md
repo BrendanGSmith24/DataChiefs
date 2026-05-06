@@ -17,6 +17,30 @@ For our analysis, we benchmarked a linear regression model against a more comple
 In this project, we really emphasized being as transparent as possible. Every decision we made is documented, and the entire process can be re-executed with a single shell script. Our main goal was to still maintain good data management throughout the duration of our study.
 
 ## Data Profile
+### Overview
+This project uses four datasets obtained from the Federal Reserve Bank of St. Louis (https://fred.stlouisfed.org/) to examine the relationship between macroeconomic conditions and S&P 500 market performance. The datasets include the Consumer Price Index (CPI), Federal Funds Rate (FEDFUNDS), Unemployment Rate (UNRATE), and S&P 500 Index (SP500). Each dataset captures a different aspect of the broader economic environment, representing inflation, monetary policy, labor market conditions, and equity market price level.
+
+These datasets complement each other by providing useful information needed to evaluate whether macroeconomic indicators help explain changes in equity market returns. The S&P 500 is used as the primary outcome variable, while inflation, interest rates, and unemployment serve as explanatory macroeconomic indicators.
+
+All datasets contain a date field, which allows them to be merged using time as the primary key. The primary difference between the datasets is their reporting frequency. The S&P 500 is reported daily while the macroeconomic indicators are reported monthly. To address this, all data was standardized to a monthly time scale prior to integration. The datasets were first combined into an integrated dataset using a shared `month` variable as the common key.
+
+The final dataset used for analysis and regression modeling is `Data_API/Integrated/fred_macro_analysis_ready.csv`.
+### CPI Dataset
+The Consumer Price Index (CPI) dataset is the CPIAUCSL series obtained from the FRED API (https://fred.stlouisfed.org/series/CPIAUCSL). This data measures the average change over time in prices paid by urban consumers for a broad basket of goods and services and serves as a primary indicator of inflation.
+
+The dataset is structured as a time series with two fields, a date column and a numeric value representing the CPI index level. The data is reported at a monthly frequency and is seasonally adjusted.
+
+Within the repository, the CPI dataset is stored at two different stages of the data pipeline
+- `Data_API/Raw/CPI.csv` (raw data pulled from the FRED API)
+- `Data_API/Cleaned/CPI.csv` (cleaned dataset)
+### FEDFUNDS Dataset
+The Federal Funds Rate dataset is the FEDFUNDS series obtained from the FRED API (https://fred.stlouisfed.org/series/FEDFUNDS). This dataset represents the effective federal funds rate, which is the interest rate at which banking institutions lend balances to each other overnight and serves as a key indicator of U.S. monetary policy.
+
+The dataset is structured as a time series with two fields, a date column and a numeric value representing the interest rate level. The data is reported at a monthly frequency and is not seasonally adjusted.
+
+Within the repository, the FEDFUNDS dataset is stored at different stages of the data pipeline
+- `Data_API/Raw/FEDFUNDS.csv` (raw data pulled from the FRED API)
+- `Data_API/Cleaned/FEDFUNDS.csv` (cleaned dataset)
 
 ## Data Quality
 
