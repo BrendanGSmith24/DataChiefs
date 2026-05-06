@@ -62,12 +62,12 @@ Within the repository, the SP500 dataset is stored at two different stages of th
 ### Data Usage
 All of the datasets are integrated using a common primary key based off time (`month`) to create a unified dataset of macroeconomic indicators and market performance. The datasets have different reporting frequencies, so the S&P 500 data (daily) was aggregated to a monthly average to align with the monthly reporting of macroeconomic indicators (CPI, FEDFUNDS, and UNRATE).
 
-The first stage of integration produces the dataset
-- `Data_API/Integrated/fred_macro_integrated.csv`
+The first stage of integration produces the dataset `Data_API/Integrated/fred_macro_integrated.csv`
+ 
  At this stage, the dataset represents a structured combination of cleaned economic and financial data, but it does not yet include feature variables useful for statistical analysis.
 
-A second dataset is then created
-- `Data_API/Integrated/fred_macro_analysis_ready.csv`
+A second dataset is then created `Data_API/Integrated/fred_macro_analysis_ready.csv`
+
 This dataset is derived from the merged and cleaned dataset. It includes additional transformations that make it more useful for analysis. Specifically, the S&P 500 index is converted into monthly returns, and CPI values are transformed into inflation rates. These transformations convert time series and level data into percentage changes, which allows for better comparison between variables.
 
 The analysis ready dataset is used for all visualization, statistical analysis, and regression modeling. In this project, S&P 500 returns serve as the primary outcome variable, while inflation, interest rates, and unemployment serve as feature variables.
@@ -112,8 +112,8 @@ These differences were considered acceptable for this analysis, as each dataset 
 
 ## Data Cleaning
 
-## Findings
 
+## Findings
 The correlation analysis showed a mixed picture across the three macro indicators. The variable that showed the strongest relationship with the S&P 500 was unemployment rate, with a correlation score of 0.249. On the surface, this seems to be the opposite of what most people would expect. However, this result was mostly shaped by the COVID-19 recovery period, when unemployment spiked in early 2020, equity markets simultaneously had one of their fastest recoveries in history. Thus, although this seems abnormal at first, the unemployment scatter plot actually makes this relationship visible. Most data points are clustered around low unemployment levels, while a handful of high-unemployment months sit at higher return values, which gives the trend line a positive slope.
 
 Inflation, measured via the CPI, produced a near-zero correlation of −0.017, essentially showing that month-to-month changes in consumer prices carry almost no relationship with the S&P 500 returns. The Federal Funds Rate correlation was similarly very low, at only 0.045. The correlation heatmap displays these results clearly: the row corresponding to sp500_return is washed out in light blue across all three indicators, while the stronger relationship visible in the matrix is actually between the Federal Funds Rate and unemployment (−0.43), which reflects the Fed's rate-cutting response to labor market deterioration, a policy unrelated to how equities perform.
@@ -146,7 +146,6 @@ To build upon the foundation that we created, we have selected four valuable met
 - *Forward-Looking Sentiment:* A significant improvement would involve integrating "forward-looking" survey data, such as the University of Michigan Consumer Sentiment Survey or inflation expectation indices. Unlike government reports that record what has already happened, these surveys capture public expectations of the future, which often drive market momentum. From a curation perspective, this would require developing new workflows to normalize qualitative survey indices and align them with quantitative financial time-series.
   
 ## Challenges
-
 The hardest part of this project wasn't the actual modeling. Instead, it was the data curation work that had to happen before we could even build a regression model. We had to wrangle four different datasets into one trustworthy file, which led to two main hurdles. Both of them  required us to make a deliberate choice about how to handle the data.
 
 **Time Frequency Mismatch**
@@ -162,6 +161,7 @@ Even after we moved everything to a monthly scale, the timestamps still didn't m
 To fix this, we stripped each timestamp down to a simple month key in YYYY-MM format before joining. This acted as a common language between the sources. It discarded the day-level precision that we didn't need and created a join key that worked every time. Although this step was simple, it ended up being crucial.
 
 ## Reproducibility
+remember to create fixed endpoints
 
 ## Data Visualization Reproducability
 
