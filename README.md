@@ -254,6 +254,34 @@ Checksum hashes are generated for the downloaded and processed datasets and save
 `Results/Tables/fred_checksums.txt` 
 The FRED API requests we used have fixed observation dates to improve reproducibility. This helps ensure that future runs retrieve the same date range instead of automatically including newly released observations.
 
+## Metadata 
+
+We followed metadata and documentation practices according to DCAT and FAIR data principles. Dataset descriptions, file locations, variable definitions, time coverage, and data provenance are documented throughout this repository.
+
+Our metadata and documentations is organized in the following locations including a machine readable file named `metadata.json`
+
+- `README.md`
+  - project overview
+  - reproducibility workflow
+  - data profile
+  - data cleaning and quality documentation
+  - findings and challenges
+
+- `data_dictionary.md`
+  - variable definitions
+  - dataset structure
+  - field descriptions
+  - derived variable explanations
+
+- `Results/Tables/fred_data_quality_report.csv`
+  - dataset dimensions
+  - time coverage
+  - missing value assessment
+  - duplicate observation checks
+
+- `Results/Tables/fred_checksums.txt`
+We used SHA-256 checksum hashes for reproducibility and integrity verification
+
 ## References
 
 U.S. Bureau of Labor Statistics. (2025). Consumer Price Index for All Urban Consumers: 

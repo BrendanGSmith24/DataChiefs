@@ -1,0 +1,40 @@
+{
+  "title": "Macroeconomic Indicators and S&P 500 Returns",
+  "identifier": "fred-macro-sp500",
+  "description": "Monthly macroeconomic indicators (CPI, federal funds rate, unemployment) merged with S&P 500 returns, retrieved from the FRED API. Built for a regression analysis of how inflation, interest rates, and labor market conditions relate to equity returns from 2016-2026.",
+  "creator": ["Brendan Smith", "Christopher Boukalis"],
+  "publisher": "Federal Reserve Bank of St. Louis (FRED)",
+  "license": "FRED Terms of Use (https://fred.stlouisfed.org/docs/api/terms_of_use.html)",
+  "temporal_coverage": "2016-05-01 to 2026-05-01",
+  "spatial_coverage": "United States",
+
+  "sources": [
+    {"series": "CPIAUCSL", "name": "CPI for All Urban Consumers", "frequency": "monthly"},
+    {"series": "FEDFUNDS", "name": "Federal Funds Effective Rate", "frequency": "monthly"},
+    {"series": "UNRATE", "name": "Unemployment Rate", "frequency": "monthly"},
+    {"series": "SP500", "name": "S&P 500 Index", "frequency": "daily, aggregated to monthly avg"}
+  ],
+
+  "variables": {
+    "month": "Monthly date, used as primary key",
+    "cpi": "CPI level (index)",
+    "fed_funds_rate": "Federal funds rate (%)",
+    "unemployment_rate": "Unemployment rate (%)",
+    "sp500_monthly_avg": "Monthly average of daily S&P 500 closes",
+    "sp500_return": "Monthly % change in sp500_monthly_avg",
+    "inflation": "Monthly % change in CPI"
+  },
+
+  "distribution": [
+    {"format": "CSV", "path": "Data_API/Integrated/fred_macro_analysis_ready.csv", "description": "Analysis-ready dataset"},
+    {"format": "CSV", "path": "Data_API/Integrated/fred_macro_integrated.csv", "description": "Pre-feature-engineering merge"},
+    {"format": "Markdown", "path": "data_dictionary.md", "description": "Full data dictionary"}
+  ],
+
+  "reproduction": {
+    "workflow": "run_all.sh",
+    "requirements": "requirements.txt"
+  },
+
+  "fair_principles": "Metadata, source URLs, and processing scripts are versioned in the repo. SHA-256 checksums for output files are in Results/Tables/fred_checksums.txt."
+}
